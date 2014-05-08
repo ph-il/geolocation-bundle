@@ -1,0 +1,17 @@
+{# Microformat : adr
+   Microformat 2 : h-adr
+   Schema : http://schema.org/PostalAddress + http://schema.org/GeoCoordinates
+#}
+
+<section itemprop="address" itemscope itemtype="http://schema.org/PostalAddress" class="h-adr adr">
+  <p class="p-label">{{ addressLabel }}</p>
+  <span itemprop="streetAddress" class="p-street-address street-address">{{ streetAddress }}</span>
+  <span itemprop="addressLocality" class="p-locality locality">{{ locality }}</span>,
+  <abbr itemprop="addressRegion" class="p-region region" title="{{ regionName }}">{{ regionCode }}</abbr>,
+  <span itemprop="postalCode" class="p-postal-code postal-code">{{ postalCode }}</span>
+  <span itemprop="addressCountry" class="p-country-name country-name">{{ countryName }}</span>
+  <p itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates" class="h-geo geo">
+    <span itemprop="latitude" class="p-latitude latitude">{{ latitude }}</span>,
+    <span itemprop="longitude" class="p-longitude longitude">{{ longitude }}</span>
+  </p>
+</section>

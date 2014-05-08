@@ -1,0 +1,41 @@
+{
+  "name" : "phil/geolocation-bundle",
+  "description" : "A Symfony2 Bundle to handle geographic location. Add geolocation to your entities. Add address entities. Add user geo location. Add doctrine functions for calculating geographical distances in your project.",
+  "type" : "symfony-bundle",
+  "keywords" : ["symfony2", "geocoding", "geoip", "address", "geocode", "geo location"],
+  "license" : ["MIT"],
+  "homepage": "https://github.com/ph-il/symfony-secure-lte",
+  "authors": [
+    {
+      "name": "Philippe Gamache",
+      "email": "philippe@ph-il.ca",
+      "homepage": "http://ph-il.ca",
+      "role": "Developer"
+    }
+  ],
+  "support": {
+    "email": "securesymfony@ph-il.ca",
+    "issues": "https://github.com/ph-il/symfony-secure-lte/issues",
+    "source": "https://github.com/ph-il/symfony-secure-lte"
+  },
+  "require" : {
+    "php": ">=5.4.21",
+    "symfony/symfony": "2.4.*",
+    "willdurand/geocoder": "~2.4",
+    "willdurand/geocoder-bundle": "~3.0",
+    "league/geotools": "~0.3",
+    "stof/doctrine-extensions-bundle": "~1.1"
+  },
+  "autoload" : {
+    "psr-0" : {
+      "Phil\\GeolocationBundle" : ""
+    }
+  },
+  "target-dir" : "Phil/GeolocationBundle",
+  "extra" : {
+    "branch-alias" : {
+      "dev-master" : "2.2-dev"
+    }
+  }
+}
+

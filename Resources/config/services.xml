@@ -1,0 +1,31 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="phil.geolocation.address.formatter.class">Phil\GeolocationBundle\Service\FormatterService</parameter>
+        <parameter key="phil.geolocation.address.geocoder.class">Phil\GeolocationBundle\Service\GeocoderService</parameter>
+        <parameter key="phil.geolocation.address.geocode_listener.class">Phil\GeolocationBundle\Listener\GeocodeListener</parameter>
+        <parameter key="phil.geolocation.address.twig_extension.class">Phil\GeolocationBundle\Twig\Extension\AddressExtension</parameter>
+    </parameters>
+
+    <services>
+        <service id="phil.geolocation.address.formatter" class="%phil.geolocation.address.formatter.class%">
+        </service>
+        <service id="phil.geolocation.address.geocoder" class="%phil.geolocation.address.geocoder.class%">
+            <argument type="service" id="bazinga_geocoder.geocoder" />
+            <argument type="service" id="phil.geolocation.address.formatter" />
+        </service>
+        <service id="phil.geolocation.address.geocode_listener" class="%phil.geolocation.address.geocode_listener.class%">
+            <argument type="service" id="phil.geolocation.address.geocoder" />
+            <tag name="doctrine.event_listener" event="prePersist" />
+            <tag name="doctrine.event_listener" event="preUpdate" />
+        </service>
+        <service id="phil.geolocation.address.twig_extension" class="%phil.geolocation.address.twig_extension.class%">
+            <argument type="service" id="phil.geolocation.address.formatter" />
+            <tag name="twig.extension" />
+        </service>
+    </services>
+</container>

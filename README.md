@@ -1,7 +1,3 @@
-[//]: # ([![Build Status](https://travis-ci.org/Padam87/AddressBundle.png?branch=master)](https://travis-ci.org/Padam87/AddressBundle)   )
-[//]: # ([![Coverage Status](https://coveralls.io/repos/Padam87/AddressBundle/badge.png)](https://coveralls.io/r/Padam87/AddressBundle)   )
-[//]: # ([![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/Padam87/AddressBundle/badges/quality-score.png?s=0b5ffbc4452af27287b8d8a3dd20d666babe16d3)](https://scrutinizer-ci.com/g/Padam87/AddressBundle/)  )
-[//]: # ([![SensioLabsInsight](https://insight.sensiolabs.com/projects/b360d86c-7095-4e57-8f4e-e626a1b50dc1/mini.png)](https://insight.sensiolabs.com/projects/b360d86c-7095-4e57-8f4e-e626a1b50dc1)  )
 Phil GeolocationBundle
 ======================
 
@@ -10,6 +6,9 @@ A Symfony2 Bundle to handle geographic location. Add geolocation to your entitie
 [![Latest Stable Version](https://poser.pugx.org/phil/geolocation-bundle/v/stable.png)](https://packagist.org/packages/phil/geolocation-bundle)
 [![Total Downloads](https://poser.pugx.org/phil/geolocation-bundle/downloads.png)](https://packagist.org/packages/phil/geolocation-bundle)
 [![License](https://poser.pugx.org/phil/geolocation-bundle/license.png)](https://packagist.org/packages/phil/geolocation-bundle)
+[![Build Status](https://travis-ci.org/ph-il/geolocation-bundle.png?branch=master)](https://travis-ci.org/ph-il/geolocation-bundle)
+[![Coverage Status](https://coveralls.io/repos/ph-il/geolocation-bundle/badge.png)](https://coveralls.io/r/ph-il/geolocation-bundle)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/fb3d1e33-4c3a-4ace-bbfb-2ab191f9144b/mini.png)](https://insight.sensiolabs.com/projects/fb3d1e33-4c3a-4ace-bbfb-2ab191f9144b)
 
 ## Installation
 
@@ -212,6 +211,8 @@ Some idea are taken from
 There is a lot to do :
 * Finish all testing
 * More documentations
+* Clean Up Code
+* All all require Entities for Geolocation
 
 Fill free to send some corrections and suggestions.
 

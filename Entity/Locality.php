@@ -51,22 +51,28 @@ class Locality
     protected $region;
     /**
      * @var string
-     * @ORM\Column(name="subregion", type="string", length=100, nullable=true)
+     * @ORM\Column(name="sub_region", type="string", length=100, nullable=true)
      */
     protected $subRegion;
     /**
      * @var string
-     * @orm\Column(type="string", length="100")
-     * @Assert\Length(max="100")
-     * @Gedmo\Sluggable()
+     * @orm\Column(type="string", length=100)
+     * @Assert\Length(max=100)
      */
     protected $name;
     /**
      * @var string
-     * @orm\Column(type="string", length="120", unique=true)
-     * @Gedmo\Slug()
+     * @orm\Column(type="string", length=120, unique=true)
+     * @Gedmo\Slug(fields={"name", "region", "country"})
      */
     protected $slug;
+
+    /**
+     * @var string
+     * @orm\Column(type="string", length=15, unique=true)
+     * @Gedmo\Slug(fields={"name"})
+     */
+    protected $slugName;
 
     /**
      *

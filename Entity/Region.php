@@ -33,17 +33,29 @@ class Region
     protected $id;
 
     /**
-     * @orm\Column(type="string", length="100")
-     * @Assert\Length(max="100")
-     * @Gedmo\Sluggable()
+     * @var string
+     * @ORM\Column(name="country", type="string", length=2, nullable=false)
+     * @Assert\NotBlank
+     */
+    protected $country;
+
+    /**
+     * @orm\Column(type="string", length=100)
+     * @Assert\Length(max=100)
      */
     protected $name;
 
     /**
-     * @orm\Column(type="string", length="105", unique=true)
-     * @Gedmo\Slug()
+     * @orm\Column(type="string", length=120, unique=true)
+     * @Gedmo\Slug(fields={"country", "name"})
      */
     protected $slug;
+
+    /**
+     * @orm\Column(type="string", length=105, unique=true)
+     * @Gedmo\Slug(fields={"name"})
+     */
+    protected $slugName;
 
     /**
      *

@@ -63,11 +63,31 @@ or
 	    );
 	}
     ```
+## 1.3 Register the Doctrine functions you need ##
 
-## 1.3 doctrine:schema:update ##
+You need to manually register the Doctrine functions you want to use.
+See http://symfony.com/doc/current/cookbook/doctrine/custom_dql_functions.html for details.
 
-Update Your schema
+    ```yaml
+    # in app/config/config.yml
 
+    doctrine:
+        dbal:
+            types:
+                point: Phil\GeolocationBundle\ORM\PointType
+            connections:
+                default:
+                    mapping_types: { point: point }
+        orm:
+            dql:
+                numeric_functions:
+                    POINTSTR: Phil\GeolocationBundle\ORM\PointStr
+                    DISTANCE: Phil\GeolocationBundle\ORM\Distance
+    ```
+
+## 1.4 Update Your schema ##
+
+    doctrine:schema:update
 
 # 2 Usage #
 
@@ -156,7 +176,7 @@ Create a fixture class (in a separate folder to be able to load only this one) w
 
 ```php
 // MyCompany/MyBundle/Doctrine/Fixtures/PhilGeolocation/MyGeonamesPostalCodeData.php
-namespace MyCompany\MyBundle\Doctrine\Fixtures\PhilGeolocation;
+namespace MyCompany\MyBundle\Doctrine\Fixtures;
 
 use Phil\GeolocationBundle\DataFixtures\ORM\loadPostalCodeData;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -171,8 +191,27 @@ class MyGeonamesPostalCodeData extends loadPostalCodeData {
 }
 ```
 
+Now, backup your database! Don't blame anyone else for data loss if something goes wrong.
+Then import the fixture and remember to use the `--append` parameter.
+
+```sh
+# in a shell
+php app/console doctrine:fixtures:load --append --fixtures="src/MyCompany/MyBundle/DataFixtures/ORM"
+```
+
+sf doctrine:fixtures:load --append --fixtures="src/Phil/TestBundle/DataFixtures/ORM"
 
 # 3 Thanks #
 
 Some idea are taken from
 [padam87/address-bundle](https://packagist.org/packages/padam87/address-bundle)
+[craue/geo-bundle](https://github.com/craue/CraueGeoBundle)
+
+# 4 TODO #
+There is a lot to do :
+* Finish all testing
+* More documentations
+
+Fill free to send some corrections and suggestions.
+
+

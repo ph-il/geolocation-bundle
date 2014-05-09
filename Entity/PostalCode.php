@@ -41,18 +41,16 @@ class PostalCode
      * @var string
      * @ORM\Column(name="country", type="string", length=2, nullable=false)
      * @Assert\NotBlank
-     * @Gedmo\Sluggable()
      */
     protected $country;
     /**
-     * @orm\Column(type="string", length="20")
-     * @Assert\Length(max="20")
-     * @Gedmo\Sluggable()
+     * @orm\Column(name="postal_code", type="string", length=20)
+     * @Assert\Length(max=20)
      */
     protected $postalCode;
     /**
-     * @orm\Column(type="string", length="25", unique=true)
-     * @Gedmo\Slug()
+     * @orm\Column(type="string", length=25, unique=true)
+     * @Gedmo\Slug(fields={"country", "postalCode"})
      */
     protected $slug;
 

@@ -20,7 +20,7 @@ abstract class loadLocalityData extends AbstractFixture implements FixtureInterf
         return $manager->getRepository(get_class(new Locality()));
     }
 
-    protected function clearPostalCodesTable(ObjectManager $manager) {
+    protected function clearLocalityTable(ObjectManager $manager) {
         foreach ($this->getRepository($manager)->findAll() as $entity) {
             $manager->remove($entity);
         }
@@ -75,22 +75,18 @@ abstract class loadLocalityData extends AbstractFixture implements FixtureInterf
         return false;
     }
 
-    /**
-     * @param ObjectManager $manager
-     * @param               $country
-     * @param               $postalCode
-     * @param               $arr
-     */
-    private function addPostalCode(ObjectManager $manager, $country, $postalCode, $latitude, $longitude)
+    private function addLocality(ObjectManager $manager, $country, $region, $subRegion, $name, $latitude, $longitude)
     {
-        $entity = new PostalCode();
+        $entity = new Locality();
         $entity->setCountry($country);
-        $entity->setPostalCode($postalCode);
+        $entity->setRegion($region);
+        $entity->setSubregion($subRegion);
+        $entity->setName($name);
         $entity->setLatitudeLongitude(new Point(array((float) $latitude, (float) $longitude)));
         $manager->persist($entity);
         ++$this->entriesAdded;
 
-        $this->addReference('postalcode-' . $this->entriesAdded, $entity);
+        $this->addReference('locality-' . $this->entriesAdded, $entity);
 
     }
 
@@ -104,45 +100,45 @@ abstract class loadLocalityData extends AbstractFixture implements FixtureInterf
         }
     }
 
-    /**
-     * @param ObjectManager $manager
-     * @param               $filename
-     */
-    private function addEntriesFromGeoName(ObjectManager $manager, $filename)
-    {
-        $currentBatchEntries = array();
-
-        $fcontents = file($filename);
-        for ($i = 0, $numLines = count($fcontents); $i < $numLines; ++$i) {
-            $line = trim($fcontents[$i]);
-            $arr  = explode("\t", $line);
-
-            // skip if no lat/lng values
-            if (!array_key_exists(9, $arr) || !array_key_exists(10, $arr)) {
-                continue;
-            }
-
-            $country    = $arr[0];
-            $postalCode = $arr[1];
-
-            if ($this->checkDuplicate($country, $postalCode, $currentBatchEntries)) {
-                continue;
-            }
-
-            $this->addPostalCode($manager, $country, $postalCode, (float)$arr[9], (float)$arr[10]);
-
-            $currentBatchEntries[] = $country . '-' . $postalCode;
-
-            if ((($i + 1) % self::BATCH_SIZE) === 0) {
-                $manager->flush();
-                $manager->clear();
-                $currentBatchEntries = array();
-                echo '.'; // progress indicator
-            }
-        }
-
-        $manager->flush();
-    }
+//    /**
+//     * @param ObjectManager $manager
+//     * @param               $filename
+//     */
+//    private function addEntriesFromGeoName(ObjectManager $manager, $filename)
+//    {
+//        $currentBatchEntries = array();
+//
+//        $fcontents = file($filename);
+//        for ($i = 0, $numLines = count($fcontents); $i < $numLines; ++$i) {
+//            $line = trim($fcontents[$i]);
+//            $arr  = explode("\t", $line);
+//
+//            // skip if no lat/lng values
+//            if (!array_key_exists(9, $arr) || !array_key_exists(10, $arr)) {
+//                continue;
+//            }
+//
+//            $country    = $arr[0];
+//            $postalCode = $arr[1];
+//
+//            if ($this->checkDuplicate($country, $region, $locality, $currentBatchEntries)) {
+//                continue;
+//            }
+//
+//            $this->addPostalCode($manager, $country, $postalCode, (float)$arr[9], (float)$arr[10]);
+//
+//            $currentBatchEntries[] = $country . '-' . $postalCode;
+//
+//            if ((($i + 1) % self::BATCH_SIZE) === 0) {
+//                $manager->flush();
+//                $manager->clear();
+//                $currentBatchEntries = array();
+//                echo '.'; // progress indicator
+//            }
+//        }
+//
+//        $manager->flush();
+//    }
 
     /**
      * @param ObjectManager $manager
@@ -161,15 +157,17 @@ abstract class loadLocalityData extends AbstractFixture implements FixtureInterf
                 }
 
                 $country    = $data[0];
-                $postalCode = $data[1];
+                $region = $data[1];
+                $subregion = $data[2];
+                $locality = $data[3];
 
-                if ($this->checkDuplicate($country, $postalCode, $currentBatchEntries)) {
+                if ($this->checkDuplicate($country, $region, $locality, $currentBatchEntries)) {
                     continue;
                 }
 
-                $this->addPostalCode($manager, $country, $postalCode, (float) $data[2], (float) $data[3]);
+                $this->addLocality($manager, $country, $region, $subregion, $locality, (float) $data[4], (float) $data[5]);
 
-                $currentBatchEntries[] = $country . '-' . $postalCode;
+                $currentBatchEntries[] = $country . '-' . $region . '-' . $locality;
 
                 if ((($i + 1) % self::BATCH_SIZE) === 0) {
                     $manager->flush();

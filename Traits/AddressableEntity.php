@@ -17,12 +17,12 @@ trait AddressableEntity
      *
      * microformat 2 : p-country-name in h-adr
      *
-     * @ORM\Column(type="string", length="100", name="country")
+     * @ORM\Column(type="string", length=100, name="country")
      *
      * @Assert\Country()
      * @Assert\NotBlank()
-     * @Assert\Length(min="2", max="100")
-     * @Gedmo\Versioned
+     * @Assert\Length(min=2, max=100)
+     * #Gedmo\Versioned
      *
      * @var string
      */
@@ -35,10 +35,10 @@ trait AddressableEntity
      *
      * @var string
      *
-     * @ORM\Column(type="string", length="10", name="postal_code", nullable=true)
+     * @ORM\Column(type="string", length=10, name="postal_code", nullable=true)
      *
-     * @Assert\Length(min="2", max="10")
-     * @Gedmo\Versioned
+     * @Assert\Length(min=2, max=10)
+     * #Gedmo\Versioned
      */
     protected $postalCode;
 
@@ -49,10 +49,10 @@ trait AddressableEntity
      *
      * @var string
      *
-     * @ORM\Column(type="string", length="100", nullable=true)
+     * @ORM\Column(type="string", length=100, nullable=true)
      *
-     * @Assert\Length(min="2", max="100")
-     * @Gedmo\Versioned
+     * @Assert\Length(min=2, max=100)
+     * #Gedmo\Versioned
      */
     protected $region;
 
@@ -63,10 +63,10 @@ trait AddressableEntity
      *
      * @var string
      *
-     * @ORM\Column(type="string", length="100", name="sub-region", nullable=true)
+     * @ORM\Column(type="string", length=100, name="sub_region", nullable=true)
      *
-     * @Assert\Length(min="2", max="100")
-     * @Gedmo\Versioned
+     * @Assert\Length(min=2, max=100)
+     * #Gedmo\Versioned
      */
     protected $subRegion;
 
@@ -76,10 +76,10 @@ trait AddressableEntity
      * microformat 2 : p-locality in h-adr
      *
      * @var string
-     * @ORM\Column(type="string", length="100", nullable=true)
+     * @ORM\Column(type="string", length=100, nullable=true)
      *
-     * @Assert\Length(max="100")
-     * @Gedmo\Versioned
+     * @Assert\Length(max=100)
+     * #Gedmo\Versioned
      */
     protected $locality;
 
@@ -89,7 +89,7 @@ trait AddressableEntity
      * @var string
      *
      * @ORM\Column(type="string", length=100, nullable=true)
-     * @Assert\Length(max="100")
+     * @Assert\Length(max=100)
      */
     protected $district;
 
@@ -100,10 +100,10 @@ trait AddressableEntity
      *
      * @var string
      *
-     * @ORM\Column(type="string", length="200", name="street_address", nullable=true)
+     * @ORM\Column(type="string", length=200, name="street_address", nullable=true)
      *
-     * @Assert\Length(min="3", max="200")
-     * @Gedmo\Versioned
+     * @Assert\Length(min=3, max=200)
+     * #Gedmo\Versioned
      */
     protected $streetAddress;
 
@@ -112,10 +112,10 @@ trait AddressableEntity
      *
      * @var string
      *
-     * @ORM\Column(type="string", length="200", name="extended_address", nullable=true)
+     * @ORM\Column(type="string", length=200, name="extended_address", nullable=true)
      *
-     * @Assert\Length(min="3", max="200")
-     * @Gedmo\Versioned
+     * @Assert\Length(min=3, max=200)
+     * #Gedmo\Versioned
      */
     protected $extendedAddress;
 

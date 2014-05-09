@@ -14,7 +14,7 @@ use Phil\GeolocationBundle\ORM\Point;
 trait GeocodableEntity
 {
     /**
-     * @ORM\Column(type="point")
+     * @ORM\Column(name="latitude_longitude", type="point")
      *
      * @var Point
      */

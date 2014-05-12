@@ -21,6 +21,9 @@
   "require" : {
     "php": ">=5.4.21",
     "symfony/symfony": "2.4.*",
+    "doctrine/orm": "~2.2,>=2.2.3",
+    "doctrine/doctrine-bundle": "~1.2",
+    "twig/extensions": "~1.0",
     "willdurand/geocoder": "~2.4",
     "willdurand/geocoder-bundle": "~3.0",
     "league/geotools": "~0.3",
@@ -38,11 +41,5 @@
       "Phil\\GeolocationBundle" : ""
     }
   },
-  "target-dir" : "Phil/GeolocationBundle",
-  "extra" : {
-    "branch-alias" : {
-      "dev-master" : "2.2-dev"
-    }
-  }
+  "target-dir" : "Phil/GeolocationBundle"
 }
-

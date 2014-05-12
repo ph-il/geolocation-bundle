@@ -19,4 +19,4 @@
             <directory>./src/</directory>
         </whitelist>
     </filter>
-</phpunit>ß
+</phpunit>

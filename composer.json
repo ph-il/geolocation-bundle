@@ -4,7 +4,7 @@
   "type" : "symfony-bundle",
   "keywords" : ["symfony2", "geocoding", "geoip", "address", "geocode", "geo location"],
   "license" : ["MIT"],
-  "homepage": "https://github.com/ph-il/symfony-secure-lte",
+  "homepage": "https://github.com/ph-il/geolocation-bundle",
   "authors": [
     {
       "name": "Philippe Gamache",
@@ -15,8 +15,8 @@
   ],
   "support": {
     "email": "securesymfony@ph-il.ca",
-    "issues": "https://github.com/ph-il/symfony-secure-lte/issues",
-    "source": "https://github.com/ph-il/symfony-secure-lte"
+    "issues": "https://github.com/ph-il/geolocation-bundle/issues",
+    "source": "https://github.com/ph-il/geolocation-bundle"
   },
   "require" : {
     "php": ">=5.4.21",

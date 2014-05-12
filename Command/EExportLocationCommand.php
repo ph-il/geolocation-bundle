@@ -14,13 +14,14 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Class exportLocationCommand
+ * Class ExportLocationCommand
+ *
+ * This need to be more generic.
  *
  * @package Phil\GeolocationBundle\Command
- *
- * @TODO Make it Generic
  */
-class exportLocationCommand extends ContainerAwareCommand {
+class ExportLocationCommand extends ContainerAwareCommand {
+
     protected function configure()
     {
 
@@ -29,11 +30,17 @@ class exportLocationCommand extends ContainerAwareCommand {
             ->setDescription('Export User Location Choices.');
     }
 
+    /**
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $progress = $this->getHelperSet()->get('progress');
 
         $conn = $this->getContainer()->get('doctrine.dbal.default_connection');
+
+        $kernel = $this->getContainer()->get('kernel');
 
         $sqlTop10  = 'SELECT distinct *
               FROM geo_locality
@@ -45,10 +52,10 @@ class exportLocationCommand extends ContainerAwareCommand {
         $output->writeln('Exporting English' );
 
         $output->writeln('Exporting Top 10' );
-        $top10 = $this->exportDatas($output, $conn, $sqlTop10, $progress);
+        $top10 = $this->exportData($output, $conn, $sqlTop10, $progress);
 
         $output->writeln('Exporting Top 100' );
-        $top100 = $this->exportDatas($output, $conn, $sqlTop100, $progress);
+        $top100 = $this->exportData($output, $conn, $sqlTop100, $progress);
 
 
         $values = array(
@@ -64,7 +71,7 @@ class exportLocationCommand extends ContainerAwareCommand {
             )
         );
 
-        @file_put_contents(__DIR__ . '/../Resources/public/js/locality_en.js', 'var geolocationLocality = ' . json_encode($values, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) . ';' );
+        @file_put_contents($kernel->locateResource('@PhilGeolocationBundle/Resources/public/js') . '/locality_en.js', 'var geolocationLocality = ' . json_encode($values, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) . ';' );
 
         $output->writeln('Exporting French' );
 
@@ -81,18 +88,20 @@ class exportLocationCommand extends ContainerAwareCommand {
             )
         );
 
-        @file_put_contents(__DIR__ . '/../Resources/public/js/locality_fr.js', 'var geolocationLocality = ' . json_encode($values, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) . ';' );
+        @file_put_contents($kernel->locateResource('@PhilGeolocationBundle/Resources/public/') . 'js/locality_fr.js', 'var geolocationLocality = ' . json_encode($values, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) . ';' );
 
         $output->writeln('DONE');
     }
 
     /**
      * @param OutputInterface $output
-     * @param                 $conn
-     * @param                 $sql
-     * @param                 $progress
+     * @param Connection      $conn
+     * @param string          $sql
+     * @param Progress        $progress
+     *
+     * @return array
      */
-    private function exportDatas(OutputInterface $output, $conn, $sql, $progress)
+    private function exportData(OutputInterface $output, $conn, $sql, $progress)
     {
         $values = array();
         $rows   = $conn->fetchAll($sql);
@@ -101,7 +110,7 @@ class exportLocationCommand extends ContainerAwareCommand {
 
         foreach ($rows as $row) {
             $data = unpack('x/x/x/x/corder/Ltype/dlat/dlon', $row['latitude_longitude']);
-            $values[] = array('name' => $row['name'], 'lat' => ['lat'], 'lon' => ['lon']);
+            $values[] = array('name' => $row['name'], 'lat' => $data['lat'], 'lon' => $data['lon']);
             $progress->advance();
         }
 

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit backupGlobals="false" colors="true" bootstrap="tests/bootstrap.php">
+<phpunit backupGlobals="false" colors="true" bootstrap="Tests/bootstrap.php">
     <testsuites>
         <testsuite name="GeolocationBundle Test Suite - Integration">
-            <directory>./tests/Service/</directory>
+            <directory>./Tests/Service/</directory>
         </testsuite>
     </testsuites>
 

@@ -30,7 +30,7 @@ class FormatterService
     public $patterns = array(
         'generic' => "{streetAddress}\n{?district}\n{locality}\n{?region}\n{postalCode}\\{country}",
         'CA'      => "{streetAddress}\n{^locality}, {^region} {^postalCode}\n{^country}",
-        'GB'      => "{streetAddress}\n{^city}\n{?^region}\n{?^subRegion}\n{^postalCode}\n{^country}",
+        'GB'      => "{streetAddress}\n{^locality}\n{?^region}\n{?^subRegion}\n{^postalCode}\n{^country}",
         'HU'      => "{locality} {?district}\n{streetAddress}\n{postalCode}\n{country}",
         'US'      => "{streetAddress}\n{^locality}, {^region} {^postalCode}\n{^country}"
     );
@@ -57,86 +57,22 @@ class FormatterService
             function ($matches) use ($formatter, $address, $flags) {
                 $match = $matches[1];
 
-                $optional = false;
-                $toUpper  = false;
-                $toLower  = false;
-
-                if (strstr($match, "?") != false) {
-                    $match    = str_replace("?", "", $match);
-                    $optional = true;
-                }
-
-                if (strstr($match, "^") != false) {
-                    $match   = str_replace("^", "", $match);
-                    $toUpper = true;
-                }
-
-                if (strstr($match, "ˇ") != false) {
-                    $match   = str_replace("ˇ", "", $match);
-                    $toLower = true;
-                }
-
-                $value = null;
-
-                if ($address instanceof AddressInterface) {
-                    $getter = "get" . str_replace(" ", "", ucwords(str_replace("_", " ", $match)));
-
-                    if (method_exists($address, $getter)) {
-                        $value = $address->$getter();
-                    }
-                } elseif (is_array($address) && array_key_exists($match, $address)) {
-                    $value = $address[$match];
-                }
-
-                if ($value === null) {
-                    if ($optional) {
-                        $value = '';
-                    } else {
-                        $value = '{' . $matches[1] . '}';
-                    }
-                }
+                list($optional, $toUpper, $toLower, $match) = $this->getMatchOption($match);
+                $value = $this->getValueFromMatch($matches, $address, $match, $optional);
 
                 if ($match === 'country') {
                     $value = Intl::getRegionBundle()->getCountryName(strtoupper($value));
                 }
 
-                if (!$formatter->isFlagged($flags, self::FLAG_NOCASE)) {
-                    if ($toUpper) {
-                        $value = strtoupper($value);
-                    }
-
-                    if ($toLower) {
-                        $value = strtolower($value);
-                    }
-                }
+                $value = $this->changeCase($formatter, $flags, $toUpper, $value, $toLower);
 
                 return $value;
             },
             $this->getPattern($address)
         );
 
-        // remove multiple line breaks
-        while (strstr($string, "\n\n") != false) {
-            $string = str_replace("\n\n", "\n", $string);
-        }
-
-        // remove multiple commas
-        while (strstr($string, ",,") != false) {
-            $string = str_replace(",,", ",", $string);
-        }
-
-        // remove multiple space
-        while (strstr($string, "  ") != false) {
-            $string = str_replace("  ", " ", $string);
-        }
-
-        if ($this->isFlagged($flags, self::FLAG_NOBR)) {
-            $string = str_replace("\n", " ", $string);
-        }
-
-        if ($this->isFlagged($flags, self::FLAG_HTML)) {
-            $string = nl2br($string);
-        }
+        $string = $this->cleanAddress($string);
+        $string = $this->normalizeAddress($flags, $string);
 
         return $string;
     }
@@ -149,14 +85,14 @@ class FormatterService
      *
      * @return boolean
      */
-    public function isFlagged($flags, $flag)
+    private function isFlagged($flags, $flag)
     {
         return ($flags & $flag) === $flag;
     }
 
     /**
      * Returns the pattern for the given country.
-     * Falls back to the fallback pattern, if no pattern was specified for the counrty
+     * Falls back to the fallback pattern, if no pattern was specified for the county
      *
      * @param AddressInterface|array $address
      *
@@ -178,4 +114,141 @@ class FormatterService
 
         return $pattern;
     }
+
+    /**
+     * @param $match
+     *
+     * @return array
+     */
+    private function getMatchOption($match)
+    {
+        $optional = false;
+        $toUpper  = false;
+        $toLower  = false;
+
+        if (strstr($match, "?") != false) {
+            $match    = str_replace("?", "", $match);
+            $optional = true;
+        }
+
+        if (strstr($match, "^") != false) {
+            $match   = str_replace("^", "", $match);
+            $toUpper = true;
+        }
+
+        if (strstr($match, "ˇ") != false) {
+            $match   = str_replace("ˇ", "", $match);
+            $toLower = true;
+        }
+
+        return array($optional, $toUpper, $toLower, $match);
+    }
+
+    /**
+     * @param $matches
+     * @param $address
+     * @param $match
+     * @param $optional
+     *
+     * @return null|string
+     */
+    private function getValueFromMatch($matches, $address, $match, $optional)
+    {
+        $value = null;
+
+        if ($address instanceof AddressInterface) {
+            $getter = "get" . str_replace(" ", "", ucwords(str_replace("_", " ", $match)));
+
+            if (method_exists($address, $getter)) {
+                $value = $address->$getter();
+            }
+        } elseif (is_array($address) && array_key_exists($match, $address)) {
+            $value = $address[$match];
+        }
+
+        if ($value === null) {
+            if ($optional) {
+                $value = '';
+
+                return $value;
+            } else {
+                $value = '{' . $matches[1] . '}';
+
+                return $value;
+            }
+        }
+
+        return $value;
+    }
+
+    /**
+     * @param FormatterService $formatter
+     * @param int $flags
+     * @param bool $toUpper
+     * @param string $value
+     * @param bool $toLower
+     *
+     * @return string
+     */
+    private function changeCase($formatter, $flags, $toUpper, $value, $toLower)
+    {
+        if (!$formatter->isFlagged($flags, self::FLAG_NOCASE)) {
+            if ($toUpper) {
+                $value = strtoupper($value);
+            }
+
+            if ($toLower) {
+                $value = strtolower($value);
+            }
+        }
+
+        return $value;
+    }
+
+    /**
+     * @param $string
+     *
+     * @return mixed
+     */
+    private function cleanAddress($string)
+    {
+        // remove multiple line breaks
+        while (strstr($string, "\n\n") != false) {
+            $string = str_replace("\n\n", "\n", $string);
+        }
+
+        // remove multiple commas
+        while (strstr($string, ",,") != false) {
+            $string = str_replace(",,", ",", $string);
+        }
+
+        // remove multiple space
+        while (strstr($string, "  ") != false) {
+            $string = str_replace("  ", " ", $string);
+        }
+
+        return $string;
+    }
+
+    /**
+     * @param $flags
+     * @param $string
+     *
+     * @return mixed|string
+     */
+    private function normalizeAddress($flags, $string)
+    {
+        if ($this->isFlagged($flags, self::FLAG_NOBR)) {
+            $string = str_replace("\n", " ", $string);
+        }
+
+        if ($this->isFlagged($flags, self::FLAG_HTML)) {
+            $string = nl2br($string);
+
+            return $string;
+        }
+
+        return $string;
+    }
+
 }

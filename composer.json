@@ -24,6 +24,7 @@
     "doctrine/orm": "~2.2,>=2.2.3",
     "doctrine/doctrine-bundle": "~1.2",
     "twig/extensions": "~1.0",
+    "sensio/framework-extra-bundle": "~3.0",
     "willdurand/geocoder": "~2.4",
     "willdurand/geocoder-bundle": "~3.0",
     "league/geotools": "~0.3",

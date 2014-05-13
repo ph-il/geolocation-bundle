@@ -45,7 +45,7 @@ class ServicesTest extends WebTestCase
     public function testTwigExtension()
     {
         $service = $this->container->get('phil.geolocation.address.twig_extension');
-        $className = $this->container->getParameter('phil.geolocation.  address.twig_extension.class');
+        $className = $this->container->getParameter('phil.geolocation.address.twig_extension.class');
 
         $this->assertInstanceOf($className, $service);
     }

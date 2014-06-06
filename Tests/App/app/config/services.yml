@@ -1,7 +1,7 @@
 parameters:
   phil.geolocation.address.formatter.class: Phil\GeolocationBundle\Service\FormatterService
   phil.geolocation.address.geocoder.class: Phil\GeolocationBundle\Service\GeocoderService
-  phil.geolocation.address.geocode_listener.class: Phil\GeolocationBundle\Listener\GeocodeListener
+  phil.geolocation.address.geocode_listener.class: Phil\GeolocationBundle\EventListener\GeocodeListener
   phil.geolocation.address.twig_extension.class: Phil\GeolocationBundle\Twig\Extension\AddressExtension
 services:
     phil.geolocation.address.formatter:

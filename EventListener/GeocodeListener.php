@@ -1,6 +1,6 @@
 <?php
 
-namespace Phil\GeolocationBundle\Listener;
+namespace Phil\GeolocationBundle\EventListener;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Phil\GeolocationBundle\Entity\GeocodeInterface;

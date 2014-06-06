@@ -30,6 +30,7 @@ var philGeolocation =
             this.latitude = position.coords.latitude;
             this.longitude = position.coords.longitude;
             this.geotype = 'user';
+            this.cityname = '';
             this.saveGeolocationCookie();
             if (reloadPage) {
               window.location.reload();

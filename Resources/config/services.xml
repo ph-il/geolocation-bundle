@@ -7,11 +7,17 @@
     <parameters>
         <parameter key="phil.geolocation.address.formatter.class">Phil\GeolocationBundle\Service\FormatterService</parameter>
         <parameter key="phil.geolocation.address.geocoder.class">Phil\GeolocationBundle\Service\GeocoderService</parameter>
-        <parameter key="phil.geolocation.address.geocode_listener.class">Phil\GeolocationBundle\Listener\GeocodeListener</parameter>
+        <parameter key="phil.geolocation.address.geocode_listener.class">Phil\GeolocationBundle\EventListener\GeocodeListener</parameter>
         <parameter key="phil.geolocation.address.twig_extension.class">Phil\GeolocationBundle\Twig\Extension\AddressExtension</parameter>
+        <parameter key="phil.geolocation.request_listener.class">Phil\GeolocationBundle\EventListener\UserGeolocationListener</parameter>
     </parameters>
 
     <services>
+        <service id="phil.geolocation.request_listener" class="%phil.geolocation.request_listener.class%">
+            <argument type="service" id="bazinga_geocoder.geocoder" />
+            <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequest" />
+            <tag name="kernel.event_listener" event="kernel.response" method="onKernelResponse" />
+        </service>
         <service id="phil.geolocation.address.formatter" class="%phil.geolocation.address.formatter.class%">
         </service>
         <service id="phil.geolocation.address.geocoder" class="%phil.geolocation.address.geocoder.class%">
@@ -27,5 +33,6 @@
             <argument type="service" id="phil.geolocation.address.formatter" />
             <tag name="twig.extension" />
         </service>
+
     </services>
 </container>

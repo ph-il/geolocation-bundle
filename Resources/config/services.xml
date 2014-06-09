@@ -12,9 +12,6 @@
         <parameter key="phil.geolocation.address.twig_extension.class">Phil\GeolocationBundle\Twig\Extension\AddressExtension</parameter>
         <parameter key="phil.geolocation.distance.twig_extension.class">Phil\GeolocationBundle\Twig\Extension\DistanceExtension</parameter>
         <parameter key="phil.geolocation.distance.class">League\Geotools\Distance\Distance</parameter>
-
-
-        League\Geotools\Distance
     </parameters>
 
     <services>

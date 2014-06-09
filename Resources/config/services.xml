@@ -5,11 +5,16 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
+        <parameter key="phil.geolocation.request_listener.class">Phil\GeolocationBundle\EventListener\UserGeolocationListener</parameter>
         <parameter key="phil.geolocation.address.formatter.class">Phil\GeolocationBundle\Service\FormatterService</parameter>
         <parameter key="phil.geolocation.address.geocoder.class">Phil\GeolocationBundle\Service\GeocoderService</parameter>
         <parameter key="phil.geolocation.address.geocode_listener.class">Phil\GeolocationBundle\EventListener\GeocodeListener</parameter>
         <parameter key="phil.geolocation.address.twig_extension.class">Phil\GeolocationBundle\Twig\Extension\AddressExtension</parameter>
-        <parameter key="phil.geolocation.request_listener.class">Phil\GeolocationBundle\EventListener\UserGeolocationListener</parameter>
+        <parameter key="phil.geolocation.distance.twig_extension.class">Phil\GeolocationBundle\Twig\Extension\DistanceExtension</parameter>
+        <parameter key="phil.geolocation.distance.class">League\Geotools\Distance\Distance</parameter>
+
+
+        League\Geotools\Distance
     </parameters>
 
     <services>
@@ -33,6 +38,14 @@
             <argument type="service" id="phil.geolocation.address.formatter" />
             <tag name="twig.extension" />
         </service>
+        <service id="phil.geolocation.distance.formater" class="%phil.geolocation.distance.class%">
+        </service>
+        <service id="phil.geolocation.distance.twig_extension" class="%phil.geolocation.distance.twig_extension.class%">
+            <argument type="service" id="phil.geolocation.distance.formater" />
+            <tag name="twig.extension" />
+        </service>
+
+
 
     </services>
 </container>

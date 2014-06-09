@@ -4,6 +4,7 @@ namespace Phil\GeolocationBundle\Twig\Extension;
 
 use League\Geotools\AbstractGeotools;
 use League\Geotools\Distance\Distance;
+use Phil\GeolocationBundle\ORM\Point;
 
 class DistanceExtension extends \Twig_Extension
 {

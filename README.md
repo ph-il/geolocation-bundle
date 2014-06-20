@@ -10,28 +10,6 @@ A Symfony2 Bundle to handle geographic location. Add geolocation to your entitie
 [![Coverage Status](https://coveralls.io/repos/ph-il/geolocation-bundle/badge.png)](https://coveralls.io/r/ph-il/geolocation-bundle)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/fb3d1e33-4c3a-4ace-bbfb-2ab191f9144b/mini.png)](https://insight.sensiolabs.com/projects/fb3d1e33-4c3a-4ace-bbfb-2ab191f9144b)
 
-## Installation
-
-1. Install with composer:
-
-    ```
-    php composer.phar require phil/geolocation-bundle
-    ```
-
-2. Enable the bundle:
-
-    ```php
-    // app/AppKernel.php
-
-    public function registerBundles()
-    {
-        $bundles = array(
-            // ...
-            new Phil\GeolocationBundle\PhilGeolocationBundle(),
-        );
-    }
-    ```
-
 # 1 Installation #
 
 ## 1.1 Composer ##
@@ -40,7 +18,7 @@ A Symfony2 Bundle to handle geographic location. Add geolocation to your entitie
     ```
 	"require": {
 		....
-		"padam87/address-bundle": "~1.0"
+		"phil/geolocation-bundle": "~0.2"
 	},
     ```
 
@@ -51,7 +29,7 @@ or
     ```
 
 
-## 1.2 AppKernel ##
+## 1.2 Enable the bundle ##
 
     ```php
 	// app/AppKernel.php

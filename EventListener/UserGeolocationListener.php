@@ -61,14 +61,16 @@ class UserGeolocationListener
         /** @var Point $localisation */
         $localisation = $request->attributes->get('phil.geolocation.localisation.full');
 
-        $cookieData = array(
-            'latitude'  => $localisation->getLatitude(),
-            'longitude' => $localisation->getLongitude(),
-            'geotype'   => $request->attributes->get('phil.geolocation.geotype'),
-            'cityname'  => $request->attributes->get('phil.geolocation.cityname')
-        );
-        $cookie     = new Cookie(self::COOKIE_NAME, json_encode($cookieData), 0, '/', null, false, false);
-        $response->headers->setCookie($cookie);
+        if ($localisation) {
+            $cookieData = array(
+                'latitude'  => $localisation->getLatitude(),
+                'longitude' => $localisation->getLongitude(),
+                'geotype'   => $request->attributes->get('phil.geolocation.geotype'),
+                'cityname'  => $request->attributes->get('phil.geolocation.cityname')
+            );
+            $cookie     = new Cookie(self::COOKIE_NAME, json_encode($cookieData), 0, '/', null, false, false);
+            $response->headers->setCookie($cookie);
+        }
     }
 
     /**

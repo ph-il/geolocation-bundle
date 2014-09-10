@@ -108,6 +108,8 @@ class UserGeolocationListener
 
         $cookie['latitude']  = $coords['latitude'];
         $cookie['longitude'] = $coords['longitude'];
+        $cookie['geotype'] = 'ip';
+        $cookie['cityname'] = null;
 
         return $cookie;
     }

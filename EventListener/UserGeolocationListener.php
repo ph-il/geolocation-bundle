@@ -99,12 +99,13 @@ class UserGeolocationListener
         try {
             $coords = $this->geocoder->geocode($request->getClientIp());
         } catch (\Exception $e) {
-
-            $coords = array(
-                'latitude'  =>  "43.650297000",
-                'longitude' => "-79.385298000"
-            );
+            $coords = $this->getDefaultCoords();
         }
+
+        if ($coords['latitude'] == 0 || $coords['longitude']) {
+            $coords = $this->getDefaultCoords();
+        }
+
 
         $cookie['latitude']  = $coords['latitude'];
         $cookie['longitude'] = $coords['longitude'];
@@ -131,5 +132,18 @@ class UserGeolocationListener
 
             return $cookie;
         }
+    }
+
+    /**
+     * @return array
+     */
+    private function getDefaultCoords()
+    {
+        $coords = array(
+            'latitude'  => "43.650297000",
+            'longitude' => "-79.385298000"
+        );
+
+        return $coords;
     }
 } 

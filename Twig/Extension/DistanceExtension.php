@@ -31,7 +31,7 @@ class DistanceExtension extends \Twig_Extension
         );
     }
 
-    public function address(Point $from, Point $to, $flags = AbstractGeotools::KILOMETER_UNIT)
+    public function distance(Point $from, Point $to, $flags = AbstractGeotools::KILOMETER_UNIT)
     {
         return $this->distance->setFrom($from)->setTo($to)->in($flags)->vincenty();
     }

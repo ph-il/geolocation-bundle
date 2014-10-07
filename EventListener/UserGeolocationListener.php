@@ -86,6 +86,10 @@ class UserGeolocationListener
         $request->attributes->set('phil.geolocation.localisation.short', $shortLocalisation);
         $request->attributes->set('phil.geolocation.geotype', $cookie['geotype']);
         $request->attributes->set('phil.geolocation.cityname', $cookie['cityname']);
+
+        $geolocation = array('geotype' => $cookie['geotype'], 'cityname' => $cookie['cityname'],
+                             'localisation' => array('full' => $fullLocalisation, 'short' => $shortLocalisation));
+        $request->getSession()->set('phil.geolocation', $geolocation);
     }
 
     /**

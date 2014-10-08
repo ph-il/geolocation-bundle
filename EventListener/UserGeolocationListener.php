@@ -26,9 +26,18 @@ class UserGeolocationListener
      */
     protected $geocoder;
 
-    function __construct(GeocoderInterface $geocoder)
+    protected $latitude;
+
+    protected $longitude;
+
+    protected $city;
+
+    function __construct(GeocoderInterface $geocoder, $latitude, $longitude, $city)
     {
-        $this->geocoder = $geocoder;
+        $this->city      = $city;
+        $this->geocoder  = $geocoder;
+        $this->latitude  = $latitude;
+        $this->longitude = $longitude;
     }
 
     public function onKernelRequest(GetResponseEvent $e)
@@ -101,20 +110,16 @@ class UserGeolocationListener
     private function getLatitudeLongitude(Request $request, $cookie)
     {
         try {
-            $coords = $this->geocoder->geocode($request->getClientIp());
+            $cookie = $this->geocoder->geocode($request->getClientIp());
+            $cookie['geotype'] = 'ip';
+            $cookie['cityname'] = null;
         } catch (\Exception $e) {
-            $coords = $this->getDefaultCoords();
+            $cookie = $this->getDefaultCoords();
         }
 
-        if ($coords['latitude'] == 0 || $coords['longitude']) {
-            $coords = $this->getDefaultCoords();
+        if ($cookie['latitude'] == 0 || $cookie['longitude']) {
+            $cookie = $this->getDefaultCoords();
         }
-
-
-        $cookie['latitude']  = $coords['latitude'];
-        $cookie['longitude'] = $coords['longitude'];
-        $cookie['geotype'] = 'ip';
-        $cookie['cityname'] = null;
 
         return $cookie;
     }
@@ -143,11 +148,11 @@ class UserGeolocationListener
      */
     private function getDefaultCoords()
     {
-        $coords = array(
-            'latitude'  => "43.650297000",
-            'longitude' => "-79.385298000"
+        return array(
+            'latitude'  =>  $this->latitude,
+            'longitude' => $this->longitude,
+            'geotype' => 'ip',
+            'cityname' => $this->city
         );
-
-        return $coords;
     }
 } 

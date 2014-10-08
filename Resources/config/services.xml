@@ -17,6 +17,9 @@
     <services>
         <service id="phil.geolocation.request_listener" class="%phil.geolocation.request_listener.class%">
             <argument type="service" id="bazinga_geocoder.geocoder" />
+            <argument>%phil.geolocation.default.latitude%</argument>
+            <argument>%phil.geolocation.default.longitude%</argument>
+            <argument>%phil.geolocation.default.city%</argument>
             <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequest" />
             <tag name="kernel.event_listener" event="kernel.response" method="onKernelResponse" />
         </service>
@@ -41,8 +44,5 @@
             <argument type="service" id="phil.geolocation.distance.formater" />
             <tag name="twig.extension" />
         </service>
-
-
-
     </services>
 </container>

@@ -18,7 +18,20 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $treeBuilder->root('phil_geocoded_address');
+        $rootNode = $treeBuilder->root('phil_geolocation');
+        $rootNode
+            ->arrayNode('default')
+                ->children()
+                    ->scalarNode('latitude')
+                        ->isRequired()
+                    ->end()
+                    ->scalarNode('longitude')
+                        ->isRequired()
+                    ->end()
+                    ->scalarNode('city')
+                        ->isRequired()
+                    ->end()
+            ->end();
 
         // Here you should define the parameters that are allowed to
         // configure your bundle. See the documentation linked above for

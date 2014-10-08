@@ -20,6 +20,7 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('phil_geolocation');
         $rootNode
+            ->children()
             ->arrayNode('default')
                 ->children()
                     ->scalarNode('latitude')

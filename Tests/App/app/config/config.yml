@@ -16,3 +16,9 @@ doctrine:
 
     orm:
         auto_generate_proxy_classes: true
+
+phil_geolocation:
+    default:
+        latitude: 45.537721
+        longitude: -73.593731
+        city: Montréal

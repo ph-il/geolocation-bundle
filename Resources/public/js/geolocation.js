@@ -84,7 +84,8 @@ var philGeolocation =
 
       var loc = window.location;
       $("body").each(function () {
-        loc = $(this).data("home");
+        if ($(this).data("home") != undefined)
+          loc = $(this).data("home");
       });
       window.location = loc;
     });

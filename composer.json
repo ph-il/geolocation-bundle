@@ -28,6 +28,7 @@
     "willdurand/geocoder": "~2.4",
     "willdurand/geocoder-bundle": "~3.0",
     "league/geotools": "~0.3",
+    "guzzle/guzzle": "3.*",
     "doctrine/doctrine-fixtures-bundle": "~2.2",
     "stof/doctrine-extensions-bundle": "~1.1"
 

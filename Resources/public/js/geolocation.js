@@ -19,7 +19,7 @@ var philGeolocation =
   },
 
   saveGeolocationCookie: function () {
-    $.cookie('phil-geolocation', {'latitude': this.latitude, 'longitude': this.longitude, 'geotype': this.geotype, 'cityname': this.cityname});
+    $.cookie('phil-geolocation', '{"latitude": ' + this.latitude + ',"longitude":' + this.longitude + ',"geotype":"' + this.geotype + '","cityname":"' + this.cityname + '"}', { path: '/' });
   },
 
   getCurrentLocation: function (reloadPage) {

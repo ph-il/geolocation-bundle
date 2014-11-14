@@ -79,7 +79,7 @@ var philGeolocation =
       philGeolocation.longitude = location.data('long');
       philGeolocation.latitude = location.data('lat');
       philGeolocation.geotype = 'city';
-      philGeolocation.cityName = location.text();
+      philGeolocation.cityname = location.text();
       philGeolocation.saveGeolocationCookie();
 
       var loc = window.location;

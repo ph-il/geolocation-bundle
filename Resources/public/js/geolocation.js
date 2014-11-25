@@ -27,17 +27,17 @@ var philGeolocation =
 
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function (position) {
-            this.latitude = position.coords.latitude;
-            this.longitude = position.coords.longitude;
-            this.geotype = 'user';
-            this.cityname = '';
-            this.saveGeolocationCookie();
+            philGeolocation.latitude = position.coords.latitude;
+            philGeolocation.longitude = position.coords.longitude;
+            philGeolocation.geotype = 'user';
+            philGeolocation.cityname = '';
+            philGeolocation.saveGeolocationCookie();
             if (reloadPage) {
               window.location.reload();
             }
           }, function () {
-            this.geotype = 'err';
-            this.saveGeolocationCookie();
+            philGeolocation.geotype = 'err';
+            philGeolocation.saveGeolocationCookie();
             if (reloadPage) {
               window.location.reload();
             }

@@ -11,11 +11,15 @@ var philGeolocation =
     var info = $.cookie('phil-geolocation');
 
     if (typeof info !== 'undefined') {
-      this.latitude = info.latitude;
-      this.longitude = info.longitude;
-      this.geotype = info.geotype;
-      this.cityname = info.cityname;
+      this.setGeolocationInfo(info.latitude, info.longitude, info.geotype, info.cityname);
     }
+  },
+
+  setGeolocationInfo: function (latitude, longitude, geotype, cityname) {
+    this.latitude = latitude;
+    this.longitude = longitude;
+    this.geotype = geotype;
+    this.cityname = cityname;
   },
 
   saveGeolocationCookie: function () {
@@ -27,10 +31,7 @@ var philGeolocation =
 
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function (position) {
-            philGeolocation.latitude = position.coords.latitude;
-            philGeolocation.longitude = position.coords.longitude;
-            philGeolocation.geotype = 'user';
-            philGeolocation.cityname = '';
+            philGeolocation.setGeolocationInfo(position.coords.latitude, position.coords.longitude, 'user', '');
             philGeolocation.saveGeolocationCookie();
             if (reloadPage) {
               window.location.reload();
@@ -76,10 +77,7 @@ var philGeolocation =
 
       var location = $(this);
 
-      philGeolocation.longitude = location.data('long');
-      philGeolocation.latitude = location.data('lat');
-      philGeolocation.geotype = 'city';
-      philGeolocation.cityname = location.text();
+      philGeolocation.setGeolocationInfo(location.data('long'), location.data('lat'), 'city', location.text());
       philGeolocation.saveGeolocationCookie();
 
       var loc = window.location;
@@ -117,7 +115,6 @@ var philGeolocation =
 
     isPhilLocationMenu = true;
   }
-
 
 };
 

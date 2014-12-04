@@ -77,7 +77,7 @@ var philGeolocation =
 
       var location = $(this);
 
-      philGeolocation.setGeolocationInfo(location.data('long'), location.data('lat'), 'city', location.text());
+      philGeolocation.setGeolocationInfo(location.data('lat'), location.data('long'), 'city', location.text());
       philGeolocation.saveGeolocationCookie();
 
       var loc = window.location;

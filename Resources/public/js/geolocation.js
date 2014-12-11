@@ -8,7 +8,7 @@ var philGeolocation =
   cityname: '',
 
   init: function () {
-    var info = $.cookie('phil-geolocation');
+    var info = $.parseJSON($.cookie('phil-geolocation'));
 
     if (typeof info !== 'undefined') {
       this.setGeolocationInfo(info.latitude, info.longitude, info.geotype, info.cityname);
@@ -36,7 +36,7 @@ var philGeolocation =
             if (reloadPage) {
               window.location.reload();
             }
-          }, function () {
+          }, function (error) {
             philGeolocation.geotype = 'err';
             philGeolocation.saveGeolocationCookie();
             if (reloadPage) {

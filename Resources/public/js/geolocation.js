@@ -1,13 +1,15 @@
-var isPhilLocationMenu = false;
-
 var philGeolocation =
 {
   latitude: 0,
   longitude: 0,
   geotype: 'undefined',
   cityname: '',
+  getProvinceState: false,
+  isPhilLocationMenu: false,
 
-  init: function () {
+  init: function (getProvinceState) {
+    this.getProvinceState = typeof getProvinceState !== 'undefined' ? getProvinceState : false;
+
     var info = $.parseJSON($.cookie('phil-geolocation'));
 
     if (typeof info !== 'undefined') {
@@ -31,7 +33,7 @@ var philGeolocation =
 
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function (position) {
-            philGeolocation.setGeolocationInfo(position.coords.latitude, position.coords.longitude, 'user', '');
+            philGeolocation.setWithCityProv(position.coords.latitude, position.coords.longitude);
             philGeolocation.saveGeolocationCookie();
             if (reloadPage) {
               window.location.reload();
@@ -89,6 +91,36 @@ var philGeolocation =
     });
   },
 
+  setWithCityProv: function(latitude, longitude) {
+
+    var url = "http://maps.googleapis.com/maps/api/geocode/json?sensor=false&latlng=" + latitude + "," + longitude;
+    $.ajax({
+      type: "GET",
+      url: url,
+      dataType: "json",
+      success: function(data) {
+        for ( var i = 0; i < data.results[0].address_components.length; i++ ) {
+          if (data.results[0].address_components[i].types[0] == 'locality') {
+            var city = data.results[0].address_components[i].long_name;
+          }
+          if (data.results[0].address_components[i].types[0] == 'administrative_area_level_1') {
+            var prov = data.results[0].address_components[i].short_name;
+          }
+        }
+        if(city && prov && getProvince) {
+          philGeolocation.GeolocationInfo(latitude, longitude, 'user', city + ", " + prov);
+        } else if (city) {
+          philGeolocation.GeolocationInfo(latitude, longitude, 'user', city);
+        } else {
+          philGeolocation.GeolocationInfo(latitude, longitude, 'user', '');
+        }
+      },
+      error: function () {
+        philGeolocation.GeolocationInfo(latitude, longitude, 'user', '');
+      }
+    });
+  },
+
   prepareLocationMenu: function(currentPositionText, citiesList) {
     var city,
         menu = $('#locationMenu'),
@@ -113,9 +145,7 @@ var philGeolocation =
     this.prepareCurrentLocationClickEvent();
     this.prepareCityClickEvent();
 
-    isPhilLocationMenu = true;
+    this.isPhilLocationMenu = true;
   }
 
 };
-
-philGeolocation.init();

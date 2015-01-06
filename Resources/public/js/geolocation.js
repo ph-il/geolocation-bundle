@@ -97,8 +97,9 @@ var philGeolocation =
     $.ajax({
       type: "GET",
       url: url,
+      async: false,
       dataType: "json",
-      success: function(data) {
+      success: function(data, textStatus, jqXHR) {
         for ( var i = 0; i < data.results[0].address_components.length; i++ ) {
           if (data.results[0].address_components[i].types[0] == 'locality') {
             var city = data.results[0].address_components[i].long_name;
@@ -107,16 +108,17 @@ var philGeolocation =
             var prov = data.results[0].address_components[i].short_name;
           }
         }
-        if(city && prov && getProvince) {
-          philGeolocation.GeolocationInfo(latitude, longitude, 'user', city + ", " + prov);
+
+        if(city && prov && philGeolocation.getProvinceState) {
+          philGeolocation.setGeolocationInfo(latitude, longitude, 'user', city + ", " + prov);
         } else if (city) {
-          philGeolocation.GeolocationInfo(latitude, longitude, 'user', city);
+          philGeolocation.setGeolocationInfo(latitude, longitude, 'user', city);
         } else {
-          philGeolocation.GeolocationInfo(latitude, longitude, 'user', '');
+          philGeolocation.setGeolocationInfo(latitude, longitude, 'user', '');
         }
       },
-      error: function () {
-        philGeolocation.GeolocationInfo(latitude, longitude, 'user', '');
+      error: function (jqXHR, textStatus, errorThrown) {
+        philGeolocation.setGeolocationInfo(latitude, longitude, 'user', '');
       }
     });
   },

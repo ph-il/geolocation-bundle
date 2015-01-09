@@ -93,7 +93,8 @@ var philGeolocation =
 
   setWithCityProv: function(latitude, longitude) {
 
-    var url = "http://maps.googleapis.com/maps/api/geocode/json?sensor=false&latlng=" + latitude + "," + longitude;
+    var language = $('html').attr('lang');
+    var url = "http://maps.googleapis.com/maps/api/geocode/json?sensor=false&language=" + language + "&latlng=" + latitude + "," + longitude;
     $.ajax({
       type: "GET",
       url: url,

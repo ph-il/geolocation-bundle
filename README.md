@@ -1,6 +1,8 @@
 Phil GeolocationBundle
 ======================
 
+NOT UPDATED... Working on the new version for Symfony 3. Divided in different Bundles
+
 A Symfony2 Bundle to handle geographic location. Add geolocation to your entities. Add address entities. Add user geo location. Add doctrine functions for calculating geographical distances in your project.
 
 [![Latest Stable Version](https://poser.pugx.org/phil/geolocation-bundle/v/stable.png)](https://packagist.org/packages/phil/geolocation-bundle)
